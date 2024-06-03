@@ -1,0 +1,96 @@
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 11 and earlier (ignoring not required starting Xcode 12)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 12.5 and earlier (ignoring not required starting Xcode 13)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 14 and earlier (ignoring not required starting Xcode 15)
+*.xcscmblueprint
+*.xccheckout
+
+# Xcode Patch
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+*.xcworkspace/xcuserdata
+
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+# Packages/
+# Package.pins
+# Package.resolved
+# *.xcodeproj
+# .build/
+
+# CocoaPods
+#
+# We recommend against adding the Pods directory.
+# Avoid adding this to the gitignore file, as it's already contained within `gitignore` files included with
+# the generated Pods project.
+Pods/
+# Add this line if you want to avoid checking in source code from the Pods library.
+# source='https://cdn.cocoapods.org/'
+
+# Carthage
+#
+# Carthage/Build
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repository as they are quite large and can
+# be recreated. Uncomment the following line if you want to avoid storing the screenshots in your git repo.
+# fastlane/screenshots
+#
+# Uncomment the following line if you have fastlane install plugins
+# fastlane/report.xml
+# fastlane/Preview.html
+# fastlane/screenshots/**/*.png
+# fastlane/test_output
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection
+#
+# Add the following if you use Code Injection (https://github.com/johnno1962/injectionforxcode)
+# injection*
+
+# Bundle artifacts
+#
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Derived data
+#
+DerivedData/
+
+# Archives
+#
+*.xcarchive
+
+# Xcode Server
+#
+*.xcplugindata
+*.xcplugindata.plist
+
+# SwiftPM binary dependencies
+#
+/.swiftpm/xcode/xcshareddata/swiftpm/manifest.lock
+/.swiftpm/xcode/xcshareddata/swiftpm/manifest.signatures.json
