@@ -113,34 +113,32 @@ class HomePage: UIViewController {
                                                      repeats: true)
         }
         
-        homeViewModel.startFavoriteList { model in
-            self.favoriteModel = model.result.favoriteList ?? []
+        homeViewModel.startFavoriteList {[weak self] model in
+            self?.favoriteModel = model.result.favoriteList ?? []
             
-            self.favoriteCollection.reloadData()
+            self?.favoriteCollection.reloadData()
         }
         
-        homeViewModel.startUSDSavings1 { model in
-            self.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
-            self.homeViewModel.startKHRSavings1 { model in
-                self.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
+        homeViewModel.startUSDSavings1 { [weak self] model in
+            self?.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
+            self?.homeViewModel.startKHRSavings1 { model in
+                self?.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
          
-                self.setAmountLabel(amountModel: self.savingsAmountModel)
+                self?.setAmountLabel(amountModel: self?.savingsAmountModel ?? [])
             }
         }
         
-        
-        homeViewModel.startUSDFixed1 { model in
-            self.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
-            self.homeViewModel.startKHRFixed1 { model in
-                self.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
+        homeViewModel.startUSDFixed1 {[weak self] model in
+            self?.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
+            self?.homeViewModel.startKHRFixed1 { model in
+                self?.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
             }
         }
         
-        
-        homeViewModel.startUSDDigital1 { model in
-            self.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
-            self.homeViewModel.startKHRDigital1 { model in
-                self.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
+        homeViewModel.startUSDDigital1 {[weak self] model in
+            self?.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
+            self?.homeViewModel.startKHRDigital1 { model in
+                self?.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
             }
         }
     }
@@ -177,41 +175,39 @@ class HomePage: UIViewController {
     
     @objc func updateData(){
         
-        homeViewModel.startNotificationList{ model in
-            self.refreshControl.endRefreshing()
+        homeViewModel.startNotificationList{[weak self] model in
+            self?.refreshControl.endRefreshing()
             
-            self.messagesModel = model.result.messages ?? []
+            self?.messagesModel = model.result.messages ?? []
             
-            self.bellBtn.setImage(self.messagesModel.count == 0 ? UIImage(named: "iconBell01Nomal.png") : UIImage(named: "iconBell02Active.png"), for: .normal)
+            self?.bellBtn.setImage(self?.messagesModel.count == 0 ? UIImage(named: "iconBell01Nomal.png") : UIImage(named: "iconBell02Active.png"), for: .normal)
         }
         
         savingsAmountModel.removeAll()
         fixedAmountModel.removeAll()
         digitalAmountModel.removeAll()
         
-        homeViewModel.startUSDSavings2 { model in
-            self.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
-            self.homeViewModel.startKHRSavings2 { model in
-                self.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
+        homeViewModel.startUSDSavings2 {[weak self] model in
+            self?.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
+            self?.homeViewModel.startKHRSavings2 { model in
+                self?.savingsAmountModel.append(contentsOf: model.result.savingsList ?? [])
                 
-                self.setAmountLabel(amountModel: self.savingsAmountModel)
+                self?.setAmountLabel(amountModel: self?.savingsAmountModel ?? [])
 
             }
-
         }
         
-        homeViewModel.startUSDFixed2 { model in
-            self.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
-            self.homeViewModel.startKHRFixed2 { model in
-                self.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
+        homeViewModel.startUSDFixed2 {[weak self] model in
+            self?.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
+            self?.homeViewModel.startKHRFixed2 { model in
+                self?.fixedAmountModel.append(contentsOf: model.result.fixedDepositList ?? [])
             }
-
         }
         
-        homeViewModel.startUSDDigital2 { model in
-            self.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
-            self.homeViewModel.startKHRDigital2 { model in
-                self.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
+        homeViewModel.startUSDDigital2 {[weak self] model in
+            self?.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
+            self?.homeViewModel.startKHRDigital2 { model in
+                self?.digitalAmountModel.append(contentsOf: model.result.digitalList ?? [])
             }
         }
     }
@@ -220,8 +216,7 @@ class HomePage: UIViewController {
         if sender == privacyBtn {
             userTotalClick = !userTotalClick
             
-            getUSDAssetsString()
-            getKHRTotalAssetsString()
+            getUSD_KHRAssetsString()
         }
         else if sender == bellBtn {
             CommonUtil.showTabBar(status: false)
@@ -252,17 +247,16 @@ class HomePage: UIViewController {
 // MARK: -是否用********取代數字
 extension HomePage {
     /// 是否開啟隱私模式 --- USD
-    func getUSDAssetsString() {
+    func getUSD_KHRAssetsString() {
         
-        usdLabel.text =  userTotalClick ? privacyString : CommonUtil.getGroupSeparatorForString(number: Double(usdLabel.text ?? "") ?? 0.0)
+        if userTotalClick {
+            usdLabel.text =  privacyString
+            khrLabel.text = privacyString
+        }
+        else {
+            setAmountLabel(amountModel: savingsAmountModel)
+        }
     }
-    
-    /// 是否開啟隱私模式 --- KHR
-    func getKHRTotalAssetsString() {
-        
-        khrLabel.text = userTotalClick ? privacyString :  CommonUtil.getGroupSeparatorForString(number:Double(khrLabel.text ?? "") ?? 0.0)
-    }
-  
 }
 
 // MARK: - UICollectionViewDelegate、UICollectionViewDataSource

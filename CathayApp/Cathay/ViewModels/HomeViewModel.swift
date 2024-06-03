@@ -70,7 +70,7 @@ class HomeViewModel {
         let api = ApiService.usdSavings1
         api.fetch { responseData in
             let product = try? JSONDecoder().decode(USDSavingsModel.self, from: responseData)
-            
+    
             return  product
         } success: { model in
             completion(model)

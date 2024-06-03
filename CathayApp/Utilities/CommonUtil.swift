@@ -39,36 +39,45 @@ class CommonUtil {
 
 }
 
-extension UIViewController {
-    
+extension UIWindow {
+    static var loadingStatus = 0
     /// LoadingView是否開啟
     ///
     /// - Parameter show:開啟
     func showLoadingView(show: Bool) {
         DispatchQueue.main.async {
-            guard let window = UIApplication.shared.connectedScenes
-                    .filter({ $0.activationState == .foregroundActive })
-                    .compactMap({ $0 as? UIWindowScene })
-                    .first?.windows
-                    .filter({ $0.isKeyWindow }).first else { return }
-
             if show {
-                let loadingView = UIView()
-                loadingView.tag = 632
-                loadingView.frame = CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
-                loadingView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
+                UIWindow.loadingStatus += 1
+                print(UIWindow.loadingStatus)
 
-                let animLoading = UIActivityIndicatorView(style: .large)
-                animLoading.color = .white
-                animLoading.center = loadingView.center
-                loadingView.addSubview(animLoading)
+                if self.viewWithTag(632) == nil {
+                    let loadingView = UIView()
+                    loadingView.tag = 632
+                    loadingView.frame = CGRect(x: 0,
+                                               y: 0,
+                                               width: self.frame.width,
+                                               height: self.frame.height)
+                    loadingView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
 
-                window.addSubview(loadingView)
-                animLoading.startAnimating()
-            } else {
-                for view in window.subviews {
-                    if view.tag == 632 {
-                        view.removeFromSuperview()
+                    let animLoading = UIActivityIndicatorView(style: .large)
+                    animLoading.color = .white
+                    animLoading.center = loadingView.center
+                    loadingView.addSubview(animLoading)
+
+                    self.addSubview(loadingView)
+                    
+                    animLoading.startAnimating()
+                }
+            }
+            else {
+                UIWindow.loadingStatus -= 1
+                print(UIWindow.loadingStatus)
+
+                if UIWindow.loadingStatus == 0 {
+                    for view in self.subviews {
+                        if view.tag == 632 {
+                            view.removeFromSuperview()
+                        }
                     }
                 }
             }

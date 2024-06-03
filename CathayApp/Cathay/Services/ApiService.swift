@@ -194,33 +194,22 @@ extension ApiService {
         }
         print("🤪🤪🤪🤪🤪🤪Method：\n\(self.method)")
         print("🤪🤪🤪🤪🤪🤪Parameters：\n\(self.parameters as Any)")
-        DispatchQueue.main.async {
-            if let windowScene = UIApplication.shared.connectedScenes
-                .filter({ $0.activationState == .foregroundActive })
-                .compactMap({ $0 as? UIWindowScene })
-                .first {
-                
-                let rootViewController = windowScene.windows
-                    .filter({ $0.isKeyWindow }).first?.rootViewController
-                rootViewController?.showLoadingView(show: true)
-            }
-            
-        }
+        
+        let window = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .first?.windows.filter({ $0.isKeyWindow }).first
+        
+        window?.showLoadingView(show: true)
         
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         let task = session.dataTask(with: request){(data, response, error) in
             self.UrlRequestReturnToResponseData(data: data, response: response, error: error, success: {(response) in
+                
                 DispatchQueue.main.async {
-                    if let windowScene = UIApplication.shared.connectedScenes
-                        .filter({ $0.activationState == .foregroundActive })
-                        .compactMap({ $0 as? UIWindowScene })
-                        .first {
-                        
-                        let rootViewController = windowScene.windows
-                            .filter({ $0.isKeyWindow }).first?.rootViewController
-                        rootViewController?.showLoadingView(show: false)
-                    }
+                    
+                    window?.showLoadingView(show: false)
                     
                 }
                 success(response)
